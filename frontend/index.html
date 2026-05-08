@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShortLink Docker Lab | Premium URL Shortener</title>
+    <meta name="description" content="A fast, reliable, and premium URL shortening service built with Docker and FastAPI.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+    
+    <main class="container">
+        <div class="glass-panel">
+            <header class="header">
+                <h1>ShortLink</h1>
+                <p>Simplify your links in seconds.</p>
+            </header>
+
+            <form id="shorten-form" class="shorten-form">
+                <div class="input-group">
+                    <input type="url" id="long-url" placeholder="Paste your long URL here (e.g., https://example.com)" required>
+                    <button type="submit" id="submit-btn">
+                        <span class="btn-text">Shorten</span>
+                        <div class="loader" id="loader" style="display: none;"></div>
+                    </button>
+                </div>
+                <div id="error-message" class="error-message" style="display: none;"></div>
+            </form>
+
+            <div id="result-container" class="result-container" style="display: none;">
+                <div class="result-box">
+                    <p class="result-label">Your short link is ready!</p>
+                    <div class="short-url-group">
+                        <a href="#" id="short-url" target="_blank" rel="noopener noreferrer"></a>
+                        <button id="copy-btn" class="copy-btn" title="Copy to clipboard">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        </button>
+                    </div>
+                    <div class="stats">
+                        <p>Original: <span id="original-url-display"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
