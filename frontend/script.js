@@ -9,7 +9,7 @@ const shortUrlEl = document.getElementById('short-url');
 const originalUrlDisplay = document.getElementById('original-url-display');
 const copyBtn = document.getElementById('copy-btn');
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = '/api';
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -38,8 +38,9 @@ form.addEventListener('submit', async (e) => {
         }
 
         // Show result
-        shortUrlEl.href = data.short_url;
-        shortUrlEl.textContent = data.short_url;
+        const finalShortUrl = `${window.location.origin}/${data.short_code}`;
+        shortUrlEl.href = finalShortUrl;
+        shortUrlEl.textContent = finalShortUrl;
         originalUrlDisplay.textContent = data.original_url;
         resultContainer.style.display = 'block';
         
