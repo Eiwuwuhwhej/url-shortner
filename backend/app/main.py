@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, Request
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, FileResponse
 from sqlalchemy.orm import Session
 import validators
 import os
@@ -21,25 +21,34 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-DOMAIN = os.getenv("DOMAIN", "http://localhost:8000")
+# Serve Frontend Files
+@app.get("/")
+def serve_index():
+    return FileResponse("frontend/index.html")
 
-@app.post("/shorten", response_model=schemas.URLInfo)
+@app.get("/style.css")
+def serve_css():
+    return FileResponse("frontend/style.css")
+
+@app.get("/script.js")
+def serve_js():
+    return FileResponse("frontend/script.js")
+
+@app.post("/api/shorten", response_model=schemas.URLInfo)
 def create_short_url(url_data: schemas.URLCreate, db: Session = Depends(get_db)):
     if not validators.url(url_data.url):
         raise HTTPException(status_code=422, detail="Invalid URL provided")
 
-    # Check for duplicate
     db_url = db.query(models.URLItem).filter(models.URLItem.original_url == url_data.url).first()
     if db_url:
         return schemas.URLInfo(
             short_code=db_url.short_code,
-            short_url=f"{DOMAIN}/{db_url.short_code}",
+            short_url="", 
             original_url=db_url.original_url,
             click_count=db_url.click_count,
             created_at=db_url.created_at
         )
 
-    # Generate unique short code
     short_code = utils.generate_short_code()
     while db.query(models.URLItem).filter(models.URLItem.short_code == short_code).first():
         short_code = utils.generate_short_code()
@@ -54,7 +63,7 @@ def create_short_url(url_data: schemas.URLCreate, db: Session = Depends(get_db))
 
     return schemas.URLInfo(
         short_code=db_item.short_code,
-        short_url=f"{DOMAIN}/{db_item.short_code}",
+        short_url="", 
         original_url=db_item.original_url,
         click_count=db_item.click_count,
         created_at=db_item.created_at
